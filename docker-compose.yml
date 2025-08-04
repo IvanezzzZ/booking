@@ -1,0 +1,33 @@
+services:
+  nginx_booking:
+    container_name: nginx_booking
+    image: nginx:latest
+    ports:
+      - "8181:80"
+    volumes:
+      - ./:/var/www/
+      - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
+    depends_on:
+      - php_booking
+
+  php_booking:
+    container_name: php_booking
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    volumes:
+      - ./:/var/www/
+    depends_on:
+      - db_booking
+
+  db_booking:
+    image: postgres:16
+    container_name: db_booking
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_DATABASE}
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
