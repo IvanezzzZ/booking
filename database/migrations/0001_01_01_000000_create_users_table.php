@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('api_token', 90)->unique();
+            $table->string('api_token', 60)->unique();
             $table->timestamps();
         });
     }

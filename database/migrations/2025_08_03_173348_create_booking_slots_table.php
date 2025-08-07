@@ -13,12 +13,17 @@ return new class extends Migration
             $table->foreignId('booking_id')->constrained()->onDelete('cascade');
             $table->dateTime('start_time');
             $table->dateTime('end_time');
+            $table->index(['start_time', 'end_time']);
             $table->timestamps();
         });
     }
 
     public function down(): void
     {
+        Schema::table('booking_slots', function (Blueprint $table) {
+            $table->dropIndex(['start_time', 'end_time']);
+        });
+
         Schema::dropIfExists('booking_slots');
     }
 };
